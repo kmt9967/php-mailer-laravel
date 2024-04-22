@@ -1,0 +1,47 @@
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Mail\Message;
+
+public function sendResetCodeEmail(Request $request)
+{
+    try {
+        // Manually set mail configuration
+        $mailHost = 's84.gocheapweb.com';
+        $mailPort = 465;
+        $mailUsername = 'info@text-to-video-ai.com';
+        $mailPassword = 'ASDzxc12345@';
+        $mailEncryption = 'ssl';
+        $mailFromAddress = 'info@text-to-video-ai.com';
+        $mailFromName = 'Text-to-video-ai';
+
+        // Compose email data
+        $emailData = [
+            'subject' => 'Password Reset Code',
+            'body' => 'Your password reset code is: 123456', // Replace with actual code
+        ];
+
+        // Send email
+        Mail::send([], [], function (Message $message) use ($emailData, $mailHost, $mailPort, $mailUsername, $mailPassword, $mailEncryption, $mailFromAddress, $mailFromName) {
+            $message->to('talal9967@gmail.com')
+                ->subject($emailData['subject'])
+                ->setBody($emailData['body']);
+
+            $transport = new \Swift_SmtpTransport($mailHost, $mailPort, $mailEncryption);
+            $transport->setUsername($mailUsername);
+            $transport->setPassword($mailPassword);
+
+            $swiftMessage = new \Swift_Message($message->getSubject());
+            $swiftMessage->setFrom([$mailFromAddress => $mailFromName]);
+            $swiftMessage->setTo($message->getTo());
+            $swiftMessage->setBody($message->getBody(), 'text/html');
+
+            $mailer = new \Swift_Mailer($transport);
+            $mailer->send($swiftMessage);
+        });
+
+        // Email sent successfully
+        return "Email sent successfully";
+    } catch (\Exception $e) {
+        // Error occurred
+        return "Error: " . $e->getMessage();
+    }
+}
