@@ -4,14 +4,14 @@ use Illuminate\Mail\Message;
 public function sendResetCodeEmail(Request $request)
 {
     try {
-        // Manually set mail configuration
-        $mailHost = 's84.gocheapweb.com';
-        $mailPort = 465;
-        $mailUsername = 'YOUR_SMTP_USERNAME';
-        $mailPassword = 'YOUR_SMTP_PASSWORD';
-        $mailEncryption = 'ssl';
-        $mailFromAddress = 'YOUR_SMTP_USERNAME';
-        $mailFromName = 'Text-to-video-ai';
+        // Mail configuration is read from .env (never hard-code credentials)
+        $mailHost = env('MAIL_HOST', 'smtp.example.com');
+        $mailPort = (int) env('MAIL_PORT', 465);
+        $mailUsername = env('MAIL_USERNAME', 'YOUR_SMTP_USERNAME');
+        $mailPassword = env('MAIL_PASSWORD', 'YOUR_SMTP_PASSWORD');
+        $mailEncryption = env('MAIL_ENCRYPTION', 'ssl');
+        $mailFromAddress = env('MAIL_FROM_ADDRESS', 'no-reply@example.com');
+        $mailFromName = env('MAIL_FROM_NAME', 'Example App');
 
         // Compose email data
         $emailData = [

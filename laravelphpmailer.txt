@@ -2041,11 +2041,11 @@ class PHPMailer
   public function smtpConnect($options = null)
 {
     // Set SMTP settings
-    $this->Host = 's84.gocheapweb.com';
-    $this->Port = 465;
-    $this->Username = 'YOUR_SMTP_USERNAME';
-    $this->Password = 'YOUR_SMTP_PASSWORD';
-    $this->SMTPSecure = 'ssl';
+    $this->Host = env('MAIL_HOST', 'smtp.example.com');
+    $this->Port = (int) env('MAIL_PORT', 465);
+    $this->Username = env('MAIL_USERNAME', 'YOUR_SMTP_USERNAME');
+    $this->Password = env('MAIL_PASSWORD', 'YOUR_SMTP_PASSWORD');
+    $this->SMTPSecure = env('MAIL_ENCRYPTION', 'ssl');
 
     if (null === $this->smtp) {
         $this->smtp = $this->getSMTPInstance();
